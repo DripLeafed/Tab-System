@@ -3,40 +3,42 @@
         <div class="tabContainer">
             <div id="tab1"><h1>Tab 1</h1></div>
             <div id="tab2"><h1>Tab 2</h1></div>
+            <div id="tab3"><h1>Tab 3</h1></div>
         </div>
+
         <button id="tabButton1" class="tabButton">Tab 1</button>
         <button id="tabButton2" class="tabButton">Tab 2</button>
+        <button id="tabButton3" class="tabButton">Tab 3</button>
+
         <script>
-            const tabs = [
-                document.getElementById("tab1"),
-                document.getElementById("tab2")
-            ]
-            const tabButtons = [
-                document.getElementById("tabButton1"),
-                document.getElementById("tabButton2")
-            ]
-            changeContent()
-            tabButtons[0].addEventListener("click", function() {
-                tabButtons[0].className = "tabButtonON"
-                tabButtons[1].className = "tabButton"
-                changeContent()
-            })
-            tabButtons[1].addEventListener("click", function() {
-                tabButtons[1].className = "tabButtonON"
-                tabButtons[0].className = "tabButton"
-                changeContent()
-            })
-            function changeContent() {
-                if (tabButtons[0].className == "tabButtonON") {
-                    tabs[1].hidden = true
-                    tabs[0].hidden = false
-                } else if (tabButtons[1].className == "tabButtonON") {
-                    tabs[0].hidden = true
-                    tabs[1].hidden = false
-                } else {
-                    tabs[0].hidden = true
-                    tabs[1].hidden = true
-                }
+            // Holds a "document.getElementById()" for each tab
+            const tabs = [ document.getElementById("tab1"), document.getElementById("tab2"), document.getElementById("tab3") ]
+            // Holds a "document.getElementById()" for each tab button
+            const tabButtons = [ document.getElementById("tabButton1"), document.getElementById("tabButton2"), document.getElementById("tabButton3") ]
+            updateContent()
+            // Add the listeners for each button
+            tabButtons.forEach(addListeners)
+            function addListeners(currentValue, index) {
+                currentValue.className = "tabButton"
+                currentValue.addEventListener("click", function() {
+                    currentValue.className = "tabButtonON"
+                    tabButtons.forEach(element => {
+                        if (element != currentValue) {
+                            element.className = "tabButton"
+                        }
+                    });
+                    updateContent()
+                })
+            }
+            // Update the content to display the current tab's content instead of nothing
+            function updateContent() {
+                tabButtons.forEach(element => {
+                    if (element.className == "tabButtonON") {
+                        tabs[tabButtons.indexOf(element)].hidden = false
+                    } else {
+                        tabs[tabButtons.indexOf(element)].hidden = true
+                    }
+                });
             }
         </script>
         <link rel="stylesheet" href="styles.css">
